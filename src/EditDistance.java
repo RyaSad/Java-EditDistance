@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class EditDistance {
 	
@@ -20,7 +19,7 @@ public class EditDistance {
 			this.editDistance = editDistance;
 			this.matrix = matrix;
 			this.m = m;
-			this.n= n;
+			this.n = n;
 		}
 		
 		public String getBestMatch() {
@@ -45,6 +44,11 @@ public class EditDistance {
 	    }	
 	}
 	
+	/*
+	 * Finds the string in 'CompareList' closest to 'input'
+	 * Given an input String and a String[], this will return an ArrayList of MatchObj objects.
+	 * If there is a single 'best match', the returned list will contain a single object.
+	*/
 	public static ArrayList<MatchObj> findBestMatch(String input, String[] CompareList) {
 		int min_distance = Integer.MAX_VALUE;
 		ArrayList<MatchObj> possible_matches = new ArrayList<MatchObj>();
@@ -71,6 +75,10 @@ public class EditDistance {
 		return possible_matches;
 	}
 	
+	/*
+	 * Calculated edit distance between String s1 and String s2
+	 * Returns the edit distance (bottom-rightmost value of matrix)
+	*/
 	public static MatchObj findEditDistance(String s1, String s2) {
 		final int l1 =  s1.length() + 1;
 		final int l2 =  s2.length() + 1;
@@ -97,18 +105,30 @@ public class EditDistance {
 		return m;
 	}
 	
+	/*
+	 * Used in edit distance algorithm
+	 * Returns the minimum of 3 values
+	*/
 	public static int min3(int one, int two, int three){
 		int check_one = Math.min(one, two);
 		int check_two = Math.min(check_one, three);
 		return check_two;
 	}
 	
+	/*
+	 * Used to create list to pass into findBestMatch() if reading from a file
+	 * Returns a String[] of each line in the file
+	*/
 	public static String[] splitFileContents(String fileName) throws Exception{
 		String contents = new String(Files.readAllBytes(Paths.get(fileName)));
 		String[] list = contents.split("\n");
 		return list;
 	}
-	
+	   
+	/*
+	 * Creates/writes to 'filename'
+	 * The file will contain each a list of "best matches" if the list contains one or more matches
+	*/
 	   private static void outputToFile(ArrayList<MatchObj> list, String filename) {
 	    	try {
 	    	File file = new File(filename);
